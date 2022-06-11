@@ -1,7 +1,0 @@
-pnpm-lock.yaml
-.cache/
-.temp/
-dist/
-build/
-scripts/
-src/

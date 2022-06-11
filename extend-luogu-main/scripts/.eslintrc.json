@@ -1,8 +1,0 @@
-{
-    "env": {
-        "node": true,
-        "browser": false,
-        "greasemonkey": false,
-        "jquery": false
-    }
-}

@@ -1,2 +1,5 @@
 *.exe
+*.py
+*.java
+*.js
 extend-luogu-main/

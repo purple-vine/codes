@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# pwd
+if [[ $(cat $1) == VER* ]]; then
+  COMMIT_MSG=$(node ./scripts/escape-msg.js $1) node ./node_modules/exlg-git-commit-msg-std/check.js -c "$(pwd)/.gitmsgrc.cjs" -e COMMIT_MSG
+fi

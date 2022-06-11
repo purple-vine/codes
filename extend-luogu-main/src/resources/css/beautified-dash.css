@@ -1,0 +1,41 @@
+
+/* exlg beautified dash css by haraki */
+#exlg-dash {
+    padding: 3px 19px 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+    font-family: "Fira Code", "Fira Mono", Consolas;
+    /* background-color: #3F48CC !important; */
+}
+#exlg-dash-window[class="exlg-window"] {
+    box-shadow: 0 3px 8px rgba(0,0,0,0.6);
+    font-family: "Fira Code", "Fira Mono", Consolas;
+    padding: 10px;
+    width: 400px !important;
+    left: -175px !important;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(12px);
+    margin-top: 10px;
+}
+#exlg-windiv,#exlg-dash-window>h2 {
+    padding: 5px;
+}
+#exlg-dash-window>h2 g {
+    fill: #3F48CC;
+}
+.exlg-windiv-btn {
+    background-color: #3F48CC !important;
+    border: none !important;
+    padding: 0.313em 1em;
+}
+.exlg-windiv-btn:hover {
+    background-color: #607ee8 !important;
+    transition: background-color 0.25s;
+}
+#link-div .exlg-windiv-btnspan:nth-child(2) svg {
+    fill: #ffffff;
+    padding-right: 3px;
+    height: 16px;
+    width: 16px;
+    line-height: 1.5;
+}
+/* end. */

@@ -38,7 +38,7 @@ struct LCT{
 			rotate(x);
 		}
 	}
-	void access(int x){
+	void access(int x){ //构建 x 到根的路径
         int y = x;
         for(int f = 0; x; x = f, f = fa[x]){
             splay(x); ch[x][1] = 0; pushup(x);

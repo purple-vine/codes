@@ -1,8 +1,22 @@
 //time : 2022-06-18
-//problem id : P
-//status : not submitted
+//problem url : https://www.luogu.com.cn/problem/P3690
+//status : WA
 #include <cstdio>
 #include <queue>
+#define ONLINE_JUDGE
+#ifndef ONLINE_JUDGE
+#define dprintf printf
+#define debug() printf("fa:"); for(int i = 1; i <= n; i++) printf("%d ", T.fa[i]); printf("\n");\
+printf("sons:"); for(int i = 1; i <= n; i++) printf("%d-%d ", T.ls(i), T.rs(i)); printf("\n");\
+printf("vals:"); for(int i = 1; i <= n; i++) printf("%d-%d ", T.val[i], T.s[i]); printf("\n");
+#define debug1() printf("fa:"); for(int i = 1; i <= n; i++) printf("%d ", fa[i]); printf("\n");\
+printf("sons:"); for(int i = 1; i <= n; i++) printf("%d-%d ", ls(i), rs(i)); printf("\n");\
+printf("vals:"); for(int i = 1; i <= n; i++) printf("%d-%d-%d ", val[i], s[i], laz[i]); printf("\n");
+#else
+#define debug() 
+#define debug1()
+#define dprintf
+#endif
 #define inf 10000005
 using namespace std;
 const int M = 100005;
@@ -18,18 +32,19 @@ void write(int x){
 	putchar(x % 10 + '0');
 	return;
 }
+int op, x, n, m, y, a[M];
 struct LCT{
 	#define ls(x) ch[x][0]
 	#define rs(x) ch[x][1]
     #define isroot(x) (ch[fa[x]][0] != x && ch[fa[x]][1] != x)
-	int sz[M], rt, tot, fa[M], ch[M][2], val[M], cnt[M], laz[M];
-	void pushup(int x) {sz[x] = sz[ls(x)] + sz[rs(x)] + cnt[x];}
-	void pushdown(int x) {if(!laz[x]) return; laz[ls(x)] ^= 1; laz[rs(x)] ^= 1; swap(ch[x][0], ch[x][1]); laz[x] = 0;}
+	int sz[M], rt, tot, fa[M], ch[M][2], val[M], cnt[M], laz[M], s[M];
+	void pushup(int x) {sz[x] = sz[ls(x)] + sz[rs(x)] + cnt[x]; s[x] = (s[ls(x)] ^ s[rs(x)] ^ val[x]);}
+	void pushdown(int x) {if(!laz[x]) return; laz[ls(x)] ^= 1; laz[rs(x)] ^= 1; laz[x] = 0;}
 	bool get(int x) {return x == rs(fa[x]);}
 	void clear(int x) {ch[x][0] = ch[x][1] = fa[x] = val[x] = sz[x] = cnt[x] = 0;}
-	int build(int x) {sz[++tot] = 1; cnt[tot] = 1; val[tot] = x; return tot;}
+	int build(int x) {sz[++tot] = 1; cnt[tot] = 1; s[tot] = val[tot] = x; return tot;}
 	void rotate(int x){ 
-		pushdown(fa[x]); pushdown(x);
+		// pushdown(fa[x]); pushdown(x);
 		int y = fa[x], z = fa[y], chk = get(x);
         if (!isroot(y)) ch[z][ch[z][1] == y] = x; //特殊的 xz 连边
 		ch[y][chk] = ch[x][chk ^ 1]; if(ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y; //处理x另一方向的儿子 
@@ -51,12 +66,15 @@ struct LCT{
 	void access(int x){ //构建 x 到根的路径
         int f = x;
         for(int y = 0; x; y = x, x = fa[x]){
+			// dprintf("y=%d x=%d\n", y, x);
             splay(x); rs(x) = y; pushup(x);
+			debug1()
         }
         splay(f);
     }
 	void makeroot(int x){
-		access(x); splay(x); 
+		access(x); dprintf("makeroot access x=%d\n", x); debug1()
+		splay(x); dprintf("makeroot splay x=%d\n", x); debug1()
 		laz[x] ^= 1; swap(ls(x), rs(x)); 
 	}
 	int findroot(int x){
@@ -66,7 +84,9 @@ struct LCT{
 		return splay(y), y; //保证 splay 复杂度
 	}
 	void split(int x, int y){
-		makeroot(x); access(y); splay(y);
+		makeroot(x); dprintf("makeroot x=%d:\n", x); debug1()
+		access(y); dprintf("access y=%d:\n", y); debug1()
+		splay(y); dprintf("splay y=%d:\n", y); debug1()
 	}
 	bool link(int x, int y){ //造出的 splay 以 y 为根
 		makeroot(x); if(findroot(y) == x) return 0;
@@ -77,8 +97,19 @@ struct LCT{
 		if(findroot(y) != x || ls(y) != x) return 0;
 		ls(y) = 0; pushup(y); splay(y); return 1;
 	}
-}tr;
-int op, x, n, m, y;
+	void modify(int x, int y){
+		val[x] = y; pushup(x); splay(x);
+	}
+}T;
 int main(){
 	scanf("%d %d", &n, &m);
+	for(int i = 1; i <= n; i++) scanf("%d", &a[i]), T.build(a[i]);
+	while(m--){
+		scanf("%d %d %d", &op, &x, &y);
+		if(op == 0) T.split(x, y), printf("%d\n", T.s[y]);
+		else if(op == 1) T.link(x, y);
+		else if(op == 2) T.cut(x, y);
+		else T.modify(x, y);
+		debug()
+	}
 } 

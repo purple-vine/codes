@@ -1,46 +1,95 @@
-//time : 22-6-6 12:13
-//problem id : luogu P4213
+//time : 2022-06-18
+//problem url : https://www.luogu.com.cn/problem/P3690
 //status : not submitted
 #include <cstdio>
-#include <map>
-#include <assert.h>
-#define LL long long
+#include <queue>
+#define inf 10000005
 using namespace std;
-const int M = 1000005;
-int mu[M], p[M], tt, phi[M]; bool f[M]; LL summu[M], sumphi[M];
-void pre(int n){
-	sumphi[1] = summu[1] = f[1] = mu[1] = 1;
-	for(int i = 2; i <= n; i++){
-		if(!f[i]) p[++tt] = i, mu[i] = -1, phi[i] = i-1;
-		for(int j = 1; j <= tt; j++){
-			int k = p[j] * i; if(k > n) break;
-			if(i % p[j] == 0) {f[k] = 1; mu[k] = 0; phi[k] = phi[i] * p[j]; break;}
-			f[k] = 1; mu[k] = -mu[i]; phi[k] = phi[i] * (p[j]-1);
+const int M = 100005;
+int read(){
+	int x = 0, f = 1; char c = getchar();
+	while(c < '0' || c > '9') {if(c == '-') f = -1; c = getchar();}
+	while(c >= '0' && c <= '9') {x = x * 10 + c - '0'; c = getchar();}
+	return x * f;
+}
+void write(int x){
+	if(x < 0) {putchar('-'); x = -x;}
+	if(x > 9) write(x / 10);
+	putchar(x % 10 + '0');
+	return;
+}
+struct LCT{
+	#define ls(x) ch[x][0]
+	#define rs(x) ch[x][1]
+    #define isroot(x) (ch[fa[x]][0] != x && ch[fa[x]][1] != x)
+	int sz[M], rt, tot, fa[M], ch[M][2], val[M], cnt[M], laz[M], s[M];
+	void pushup(int x) {sz[x] = sz[ls(x)] + sz[rs(x)] + cnt[x]; s[x] = s[ls(x)] ^ s[rs(x)] ^ val[x];}
+	void pushdown(int x) {if(!laz[x]) return; laz[ls(x)] ^= 1; laz[rs(x)] ^= 1; swap(ch[x][0], ch[x][1]); laz[x] = 0;}
+	bool get(int x) {return x == rs(fa[x]);}
+	void clear(int x) {ch[x][0] = ch[x][1] = fa[x] = val[x] = sz[x] = cnt[x] = 0;}
+	int build(int x) {sz[++tot] = 1; cnt[tot] = 1; s[tot] = val[tot] = x; return tot;}
+	void rotate(int x){ 
+		pushdown(fa[x]); pushdown(x);
+		int y = fa[x], z = fa[y], chk = get(x);
+        if (!isroot(y)) ch[z][ch[z][1] == y] = x; //特殊的 xz 连边
+		ch[y][chk] = ch[x][chk ^ 1]; if(ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y; //处理x另一方向的儿子 
+		fa[y] = x; ch[x][chk ^ 1] = y; fa[x] = z; //yx父子关系对调 
+		pushup(x); pushup(y); 
+	}
+	void update(int x){
+		if(!isroot(x)) update(fa[x]);
+		pushdown(x);
+	}
+	void splay(int x){ //使 x 所在子树的根 
+		update(x);
+		while(!isroot(x)){
+			int y = fa[x];
+			if(!isroot(y)) rotate(get(x) == get(y) ? y : x);
+			rotate(x);
 		}
-		summu[i] = summu[i-1] + 1ll * mu[i]; sumphi[i] = sumphi[i-1] + 1ll * phi[i];
-	} 
-}
-int T, n, m = 1000000; map<int, LL> smu, sphi;
-LL Summu(int n){
-    if(n <= m) return summu[n];
-    if(smu[n]) return smu[n];
-    LL ans = 1ll;
-    for(LL l = 2, r; l <= n; l = r+1){
-        r = 1ll * n/(n/l); ans -= (r-l+1) * Summu(n/l);
-    } return smu[n] = ans;
-}
-LL Sumphi(int n){
-    if(n <= m) return sumphi[n];
-    if(sphi[n]) return sphi[n];
-    LL ans = n * (n+1) / 2ll;
-    for(LL l = 2, r; l <= n; l = r+1){
-        r = 1ll * n/(n/l); ans -= (r-l+1) * Sumphi(n/l);
-    } return sphi[n] = ans;
-}
-signed main(){
-    scanf("%lld", &T); pre(1000000);
-    while(T--){
-        scanf("%lld", &n);
-        printf("%lld %lld\n", Sumphi(n), Summu(n));
+	}
+	void access(int x){ //构建 x 到根的路径
+        int f = x;
+        for(int y = 0; x; y = x, x = fa[x]){
+            splay(x); rs(x) = y; pushup(x);
+        }
+        splay(f);
     }
-}
+	void makeroot(int x){
+		access(x); splay(x); 
+		laz[x] ^= 1; swap(ls(x), rs(x)); 
+	}
+	int findroot(int x){
+		access(x); splay(x);
+		int y = x;
+		while(ls(y)) pushdown(y), y = ls(y);
+		return splay(y), y; //保证 splay 复杂度
+	}
+	void split(int x, int y){
+		makeroot(x); access(y); splay(y);
+	}
+	bool link(int x, int y){ //造出的 splay 以 y 为根
+		makeroot(x); if(findroot(y) == x) return 0;
+		fa[x] = y; return 1;
+	}
+	bool cut(int x, int y){
+		split(x, y);
+		if(findroot(y) != x || ls(y) != x) return 0;
+		ls(y) = 0; pushup(y); splay(y); return 1;
+	}
+	void modify(int x, int y){
+		val[x] = y; pushup(x); splay(x);
+	}
+}T;
+int op, x, n, m, y;
+int main(){
+	scanf("%d %d", &n, &m);
+	for(int i = 1; i <= n; i++) scanf("%d", &x), T.build(x);
+	while(m--){
+		scanf("%d %d %d", &op, &x, &y);
+		if(op == 0) T.split(x, y), printf("%d\n", T.s[y]);
+		else if(op == 1) T.link(x, y);
+		else if(op == 2) T.cut(x, y);
+		else T.modify(x, y);
+	}
+} 

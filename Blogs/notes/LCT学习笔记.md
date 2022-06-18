@@ -118,6 +118,7 @@ z 是 x 的父亲的父亲。y 实际上不是 x 的父亲的可能可以排除�
 
 ```cpp
 void rotate(int x){ 
+	update(x);
 	int y = fa[x], z = fa[y], chk = get(x);
     if (!isRoot(y)) ch[z][ch[z][1] == y] = x; //特殊的 xz 连边
 	ch[y][chk] = ch[x][chk ^ 1]; if(ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y; //处理 x 另一方向的儿子 
@@ -129,7 +130,6 @@ void update(int x){
 	pushdown(x);
 }
 void splay(int x){ //使 x 为所在 Splay 的根 
-	update(x);
 	while(!isroot(x)){ //所有 fa[x] == goal 均应改为 isroot(x)
 		int y = fa[x];
 		if(!isroot(y)) rotate(get(x) == get(y) ? y : x);

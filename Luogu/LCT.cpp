@@ -44,7 +44,7 @@ struct LCT{
 	void clear(int x) {ch[x][0] = ch[x][1] = fa[x] = val[x] = sz[x] = cnt[x] = 0;}
 	int build(int x) {sz[++tot] = 1; cnt[tot] = 1; s[tot] = val[tot] = x; return tot;}
 	void rotate(int x){ 
-		// pushdown(fa[x]); pushdown(x);
+		pushdown(fa[x]); pushdown(x);
 		int y = fa[x], z = fa[y], chk = get(x);
         if (!isroot(y)) ch[z][ch[z][1] == y] = x; //特殊的 xz 连边
 		ch[y][chk] = ch[x][chk ^ 1]; if(ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y; //处理x另一方向的儿子 
@@ -94,11 +94,11 @@ struct LCT{
 	}
 	bool cut(int x, int y){
 		split(x, y);
-		if(findroot(y) != x || ls(y) != x) return 0;
-		ls(y) = 0; pushup(y); splay(y); return 1;
+		if(findroot(y) != x || fa[y] != x || !ls(x)) return 0;
+		rs(x) = ls(y) = 0; pushup(x); splay(x); return 1;
 	}
 	void modify(int x, int y){
-		val[x] = y; pushup(x); splay(x);
+		splay(x); val[x] = y; pushup(x);
 	}
 }T;
 int main(){

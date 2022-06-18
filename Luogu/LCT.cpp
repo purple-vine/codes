@@ -55,7 +55,7 @@ struct LCT{
 		if(!isroot(x)) update(fa[x]);
 		pushdown(x);
 	}
-	void splay(int x){ //使 x 所在子树的根 
+	void splay(int x){//使 x 所在子树的根 
 		update(x);
 		while(!isroot(x)){
 			int y = fa[x];
@@ -63,7 +63,7 @@ struct LCT{
 			rotate(x);
 		}
 	}
-	void access(int x){ //构建 x 到根的路径
+	void access(int x){//构建 x 到根的路径
         int f = x;
         for(int y = 0; x; y = x, x = fa[x]){
 			// dprintf("y=%d x=%d\n", y, x);
@@ -72,7 +72,7 @@ struct LCT{
         }
         splay(f);
     }
-	void makeroot(int x){
+	void makeroot(int x){//让 x 成为原树的根
 		access(x); dprintf("makeroot access x=%d\n", x); debug1()
 		splay(x); dprintf("makeroot splay x=%d\n", x); debug1()
 		laz[x] ^= 1; swap(ls(x), rs(x)); 
@@ -88,14 +88,14 @@ struct LCT{
 		access(y); dprintf("access y=%d:\n", y); debug1()
 		splay(y); dprintf("splay y=%d:\n", y); debug1()
 	}
-	bool link(int x, int y){ //造出的 splay 以 y 为根
+	bool link(int x, int y){//造出的 splay 以 y 为根
 		makeroot(x); if(findroot(y) == x) return 0;
 		fa[x] = y; return 1;
 	}
 	bool cut(int x, int y){
-		split(x, y);
-		if(findroot(y) != x || fa[y] != x || !ls(x)) return 0;
-		rs(x) = ls(y) = 0; pushup(x); splay(x); return 1;
+		makeroot(x);
+		if(findroot(y) != x || fa[y] != x || !ls(y)) return 0;
+		rs(x) = fa[y] = 0; pushup(x); splay(x); return 1;
 	}
 	void modify(int x, int y){
 		splay(x); val[x] = y; pushup(x);

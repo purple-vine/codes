@@ -40,13 +40,13 @@ A：来介绍 LCT 的核心 - 辅助树。
 
 之前说过，我们使用 Splay 分别维护树上每条链
 
-![](https://images2017.cnblogs.com/blog/1309909/201801/1309909-20180123095924037-1618037447.png)
+![XLfVC6.png](https://s1.ax1x.com/2022/06/18/XLfVC6.png)
 
 （图源：<https://www.cnblogs.com/flashhu/p/8324551.html>，后面还会引这里的图）
 
-![](https://images2017.cnblogs.com/blog/1309909/201801/1309909-20180123095955350-1680422636.png)
-
 剖好后长后面这个样。
+
+![XLfegO.png](https://s1.ax1x.com/2022/06/18/XLfegO.png)
 
 这棵树有些可爱的小性质，参照第一张图上的轻重链看。
 
@@ -139,7 +139,7 @@ A：access 用于构建一条**原树上**树根到给定点的实路径。
 
 现在假设我们要让 root 到 N 构成实链。
 
-![](https://images2017.cnblogs.com/blog/1309909/201801/1309909-20180123101901740-2118178734.png)
+![XLfZ8K.png](https://s1.ax1x.com/2022/06/18/XLfZ8K.png)
 
 提示：从下到上。
 
@@ -151,9 +151,9 @@ B：`Splay(I)` 后，K 就会成为 I 的右儿子。**想要精准操控两个�
 
 此时递归下去即可。注意到上一段实际上是在构造 K 到根的路径，做下去即可。
 
-![](https://images2017.cnblogs.com/blog/1309909/201801/1309909-20180123110136115-1112016464.png)
+![XLfA4x.png](https://s1.ax1x.com/2022/06/18/XLfA4x.png)
 
-![](https://images2017.cnblogs.com/blog/1309909/201801/1309909-20180123110156272-1242463729.png)
+![XLfkU1.png](https://s1.ax1x.com/2022/06/18/XLfkU1.png)
 
 总结：旋转到所在 Splay 的根，断右子树，更新信息，转移到当前节点的 fa 做下去。
 

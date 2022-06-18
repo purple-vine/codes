@@ -1,0 +1,1 @@
+{"name":"Local: LCT","url":"d:\\OI\\codes\\LCT.cpp","tests":[{"id":1655537806422,"input":"3 3 \n1\n2\n3\n1 1 2\n0 1 2 \n0 1 1","output":"3\n1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\OI\\codes\\LCT.cpp","group":"local","local":true}

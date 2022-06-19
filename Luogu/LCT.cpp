@@ -44,12 +44,6 @@ struct LCT{
 	bool get(int x) {return x == rs(fa[x]);}
 	void clear(int x) {ch[x][0] = ch[x][1] = fa[x] = val[x] = sz[x] = cnt[x] = 0;}
 	int build(int x) {sz[++tot] = 1; cnt[tot] = 1; s[tot] = val[tot] = x; return tot;}
-	void rotate(int x){//一次旋转
-		int y=fa[x],z=fa[y],k=ch[y][1]==x,w=ch[x][!k];
-		if(!isroot(y))ch[z][ch[z][1]==y]=x;ch[x][!k]=y;ch[y][k]=w;//额外注意if(nroot(y))语句，此处不判断会引起致命错误（与普通Splay的区别2）
-		if(w)fa[w]=y;fa[y]=x;fa[x]=z;
-		pushup(y);
-	}
 	void rotate(int x){ 
 		pushdown(fa[x]); pushdown(x);
 		int y = fa[x], z = fa[y], chk = get(x);
@@ -80,20 +74,16 @@ struct LCT{
         splay(f);
     }
 	void makeroot(int x){//让 x 成为原树的根
-		access(x); dprintf("makeroot access x=%d\n", x); debug1()
-		splay(x); dprintf("makeroot splay x=%d\n", x); debug1()
-		put(x);
+		access(x); splay(x); put(x);
 	}
-	int findroot(int x){
+	int findroot(int x){ //操作完后 splay 的根是原树上的根
 		access(x); splay(x);
 		int y = x;
 		while(ls(y)) pushdown(y), y = ls(y);
 		return splay(y), y; //保证 splay 复杂度
 	}
 	void split(int x, int y){
-		makeroot(x); dprintf("makeroot x=%d:\n", x); debug1()
-		access(y); dprintf("access y=%d:\n", y); debug1()
-		splay(y); dprintf("splay y=%d:\n", y); debug1()
+		makeroot(x); access(y); splay(y); 
 	}
 	bool link(int x, int y){//造出的 splay 以 y 为根
 		makeroot(x); if(findroot(y) == x) return 0;

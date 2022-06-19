@@ -39,7 +39,8 @@ struct LCT{
     #define isroot(x) (ch[fa[x]][0] != x && ch[fa[x]][1] != x)
 	int sz[M], rt, tot, fa[M], ch[M][2], val[M], cnt[M], laz[M], s[M];
 	void pushup(int x) {sz[x] = sz[ls(x)] + sz[rs(x)] + cnt[x]; s[x] = (s[ls(x)] ^ s[rs(x)] ^ val[x]);}
-	void pushdown(int x) {if(!laz[x]) return; laz[ls(x)] ^= 1; laz[rs(x)] ^= 1; laz[x] = 0;}
+	void put(int x) {laz[x] ^= 1; swap(ls(x), rs(x));}
+	void pushdown(int x) {if(!laz[x]) return; put(ls(x)); put(rs(x)); laz[x] = 0;}
 	bool get(int x) {return x == rs(fa[x]);}
 	void clear(int x) {ch[x][0] = ch[x][1] = fa[x] = val[x] = sz[x] = cnt[x] = 0;}
 	int build(int x) {sz[++tot] = 1; cnt[tot] = 1; s[tot] = val[tot] = x; return tot;}
@@ -75,7 +76,7 @@ struct LCT{
 	void makeroot(int x){//让 x 成为原树的根
 		access(x); dprintf("makeroot access x=%d\n", x); debug1()
 		splay(x); dprintf("makeroot splay x=%d\n", x); debug1()
-		laz[x] ^= 1; swap(ls(x), rs(x)); 
+		put(x);
 	}
 	int findroot(int x){
 		access(x); splay(x);
@@ -94,7 +95,7 @@ struct LCT{
 	}
 	bool cut(int x, int y){
 		makeroot(x);
-		if(findroot(y) != x || fa[y] != x || !ls(y)) return 0;
+		if(findroot(y) != x || fa[y] != x || ls(y)) return 0;
 		rs(x) = fa[y] = 0; pushup(x); splay(x); return 1;
 	}
 	void modify(int x, int y){
@@ -103,7 +104,7 @@ struct LCT{
 }T;
 int main(){
 	scanf("%d %d", &n, &m);
-	for(int i = 1; i <= n; i++) scanf("%d", &a[i]), T.build(a[i]);
+	for(int i = 1; i <= n; i++) T.build(read());
 	while(m--){
 		scanf("%d %d %d", &op, &x, &y);
 		if(op == 0) T.split(x, y), printf("%d\n", T.s[y]);

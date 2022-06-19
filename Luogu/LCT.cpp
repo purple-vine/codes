@@ -1,6 +1,6 @@
 //time : 2022-06-18
 //problem url : https://www.luogu.com.cn/problem/P3690
-//status : WA
+//status : AC
 #include <cstdio>
 #include <queue>
 #define ONLINE_JUDGE
@@ -44,13 +44,19 @@ struct LCT{
 	bool get(int x) {return x == rs(fa[x]);}
 	void clear(int x) {ch[x][0] = ch[x][1] = fa[x] = val[x] = sz[x] = cnt[x] = 0;}
 	int build(int x) {sz[++tot] = 1; cnt[tot] = 1; s[tot] = val[tot] = x; return tot;}
+	void rotate(int x){//一次旋转
+		int y=fa[x],z=fa[y],k=ch[y][1]==x,w=ch[x][!k];
+		if(!isroot(y))ch[z][ch[z][1]==y]=x;ch[x][!k]=y;ch[y][k]=w;//额外注意if(nroot(y))语句，此处不判断会引起致命错误（与普通Splay的区别2）
+		if(w)fa[w]=y;fa[y]=x;fa[x]=z;
+		pushup(y);
+	}
 	void rotate(int x){ 
 		pushdown(fa[x]); pushdown(x);
 		int y = fa[x], z = fa[y], chk = get(x);
         if (!isroot(y)) ch[z][ch[z][1] == y] = x; //特殊的 xz 连边
 		ch[y][chk] = ch[x][chk ^ 1]; if(ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y; //处理x另一方向的儿子 
 		fa[y] = x; ch[x][chk ^ 1] = y; fa[x] = z; //yx父子关系对调 
-		pushup(x); pushup(y); 
+		pushup(y); pushup(x); 
 	}
 	void update(int x){
 		if(!isroot(x)) update(fa[x]);

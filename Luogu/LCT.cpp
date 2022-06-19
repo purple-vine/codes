@@ -90,9 +90,9 @@ struct LCT{
 		fa[x] = y; return 1;
 	}
 	bool cut(int x, int y){
-		makeroot(x);
-		if(findroot(y) != x || fa[y] != x || ls(y)) return 0;
-		rs(x) = fa[y] = 0; pushup(x); splay(x); return 1;
+		makeroot(x); access(y); splay(y);
+		if(fa[x] != y || rs(x)) return 0;
+		ls(y) = fa[x] = 0; pushup(y); splay(y); return 1;
 	}
 	void modify(int x, int y){
 		splay(x); val[x] = y; pushup(x);

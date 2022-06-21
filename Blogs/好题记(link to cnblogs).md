@@ -1,3 +1,7 @@
+[好题记 (link to Luogu)](https://www.luogu.com.cn/blog/443664/hao-ti-ji)
+
+注释 ：两篇文章链接指向不同，指向的内容相同，个人推荐 cnblogs 观看。
+
 有些记录不想同步了，22-6-21 及之后的 link 会指向 cnblogs，前面的会指向 Luogu。 
   
 [板子整理](https://www.luogu.com.cn/paste/j2f7krwp)  

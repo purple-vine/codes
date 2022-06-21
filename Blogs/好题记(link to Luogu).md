@@ -1,4 +1,6 @@
-  
+[好题记 (link to cnblogs) ](https://www.cnblogs.com/purplevine/p/16398312.html)
+
+注释 ：两篇文章链接指向不同，指向的内容相同，个人推荐 cnblogs 观看。
   
 [板子整理](https://www.luogu.com.cn/paste/j2f7krwp)  
   

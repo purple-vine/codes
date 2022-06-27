@@ -1,16 +1,21 @@
+//time : 2022-06-27 11:51
+//problem url : https://atcoder.jp/contests/abc257/tasks/abc257_g
+//status : not submitted
 #include <cstdio>
 #include <algorithm>
 #include <cstring>
 #include <iostream>
-#define debug(x) printf(x); 
+#include <string>
+#include <cmath>
+using namespace std;
 const int M = 1000005;
-//sa:排名为 i 的后缀的开头  rk:以 i 开头的后缀的排名
-//id:我们以什么顺序考虑这个数组，rk相当于要排序的数组，id 是排好序的 rk 的下标序列 
 struct sa{
 	int sa[M], rk[M << 1], cnt[M], id[M], prerk[M << 1], h[M], val[M << 1], n; char s[M];
-	void init(char *l){
+    int f[M][25];
+	void init(const char *l){
 		n = 1;
 		for(; l[n] != '\0'; n++) s[n] = l[n-1]; 
+        --n;
 	}
 	bool cmp(int i, int j, int t) {return prerk[sa[j]] == prerk[sa[i]] && prerk[sa[j]+t] == prerk[sa[i]+t];}
 	void get_sa(){
@@ -19,7 +24,7 @@ struct sa{
 		for(int i = 1; i <= m; i++) cnt[i] += cnt[i - 1];
 		for(int i = n; i; i--) sa[cnt[rk[i]]--] = i;
 		for(int i = 0; (1 << i) <= n; i++){
-			int t = (1 << i), k = 0; m = p; //printf("%d\n", m);
+			int t = (1 << i), k = 0; m = p;
 			for(int j = n; j > n - t; j--) id[++k] = j;
 			for(int j = 1; j <= n; ++j)
 				if (sa[j] > t) id[++k] = sa[j] - t;
@@ -35,17 +40,43 @@ struct sa{
 			if(p == n) break;
 		}
 		for(int i = 1, k = 0; i <= n; i++){
+            if(rk[i] == 1) continue;
 			if(k) --k;
 			while(s[i+k] == s[sa[rk[i]-1] + k]) ++k;
-			h[rk[i]] = i;
+			h[rk[i]] = k;
 		} 
+        for(int i = 1; i <= n; i++) printf("%d ", sa[i]); printf("\n");
+        for(int i = 1; i <= n; i++) printf("%d ", rk[i]); printf("\n");
+        for(int i = 1; i <= n; i++) printf("%d ", h[i]);
+        printf("\n");
+        int k = 20;
+        memset(f, 0x3f, sizeof f);
+        for(int i = 1; i <= n; i++) f[i][0] = h[i];
+        for(int j = 1; j <= k; j++){
+            for(int i = 1; i <= n; i++)
+                f[i][j] = min(f[i+(1<<j-1)][j-1], f[i][j-1]);
+        }
 	} 
-}s;
-char str[M];
+    int lcp(int x, int y){
+        printf("x=%d y=%d\n", x, y);
+        x = rk[x]; y = rk[y]; int u = min(x, y) + 1, v = max(x, y);
+        int k = log2(v-u+1);
+        printf("x=%d y=%d u=%d v=%d ans=%d\n", x, y, u, v, min(f[u][k], f[v - (1<<k) + 1][k]));
+		return min(f[u][k], f[v - (1<<k) + 1][k]);
+    }
+}s, t;
+string ss, tt; int dp[M], m, n;
 int main(){
-	scanf(" %s", str+1);
-	s.init(str+1); s.get_sa();
-	for(int i = 1; i <= s.n; i++) printf("%d ", s.sa[i]);
+	ios::sync_with_stdio(false);
+    cin.tie(0);
+    cin >> ss >> tt; n = ss.length(); ss = ss + '#' + tt;
+    s.init(ss.c_str()); m = tt.length(); s.get_sa();
+    memset(dp, 0x3f, sizeof dp);
+    dp[0] = 0;
+    for(int i = 1; i <= m; i++){
+        dp[i] = dp[i - s.lcp(n, n+i+1)] + 1;
+    }
+	printf("%d\n", dp[m]);
 	return 0;
 }
 //aabaaaab

@@ -9,7 +9,7 @@
         {
             "label": "CompileO2",
             "command": "g++",
-            "args": ["${file}", "-o", "${fileBasenameNoExtension}.exe", "-O2"],
+            "args": ["${file}", "-o", "${fileBasenameNoExtension}.exe", "-O2", "-std=c++11"],
         }
     ]
 }

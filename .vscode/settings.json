@@ -1,6 +1,10 @@
 {
     "C_Cpp.errorSquiggles": "Enabled",
     "files.associations": {
-        "cstdio": "cpp"
+        "cstdio": "cpp",
+        "chrono": "cpp",
+        "random": "cpp",
+        "limits": "cpp",
+        "valarray": "cpp"
     }
 }

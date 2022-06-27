@@ -37,6 +37,9 @@
 
 
 ## Str记录  
+
+[[str记录]abc254G Prefix Concatenation](https://www.cnblogs.com/purplevine/p/16415986.html)
+
 [UVA12206 Stammering Aliens](https://www.luogu.com.cn/blog/443664/str-ji-lu-uva12206-stammering-aliens)  
   
 ## NC记录  

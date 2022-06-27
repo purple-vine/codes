@@ -34,6 +34,9 @@
 [P3203 弹飞绵羊](https://www.luogu.com.cn/blog/443664/ds-ji-lu-p3203-tan-fei-mian-yang)
 
 ## Str记录  
+
+[[str记录]abc254G Prefix Concatenation](https://www.luogu.com.cn/blog/443664/str-ji-lu-abc254g-prefix-concatenation)
+
 [UVA12206 Stammering Aliens](https://www.luogu.com.cn/blog/443664/str-ji-lu-uva12206-stammering-aliens)  
   
 ## NC记录  

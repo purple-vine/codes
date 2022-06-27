@@ -34,6 +34,8 @@ F 是一个有趣的题，考虑把 $0$ 当成一个节点，然后就可以高�
 
 G 是性质题。
 
+[[str记录]abc254G Prefix Concatenation](https://www.luogu.com.cn/blog/443664/str-ji-lu-abc254g-prefix-concatenation)
+
 总结：
 - 第一场 at，速度偏慢，debug 时间过长。因为之前模拟赛时间充裕没注意这点。现在打这种快节奏的比赛，必须尽快调整状态。
 - 死卡一道题，不知道换题。E 比 D 简单不少，却因为死卡 D 没开 E。F 还算显然，却因为时间问题甚至没开。LZY 打了 6 题，确实如果正常发挥 6 题也行（忽然想起上场 ABC 胡了 6 题 F 却一直调不出来）

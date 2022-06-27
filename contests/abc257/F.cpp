@@ -1,3 +1,6 @@
+//time : 2022-06-27
+//problem url : https://atcoder.jp/contests/abc257/tasks/abc257_f
+//status : AC
 #include <cstdio>
 #include <queue>
 #include <iostream>

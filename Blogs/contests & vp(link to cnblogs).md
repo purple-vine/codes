@@ -59,3 +59,9 @@ C 赛时研究了很久都没想到可以直接膜 $x+y$，还是对博弈论理
 DE 题解都没有，等有了来补吧……
 
 B 提取问题本质的能力还是太差，应该想到这只是 arc 的 B，正解不会太复杂，早点发现性质
+
+附：关于博弈论
+
+> Unless the question is supposed to be for high rated people (GMs or higher) , which would require Grundy number/nimbers/mex and etc, many game theory problems could be solved analyzing the winning states and losing states. I first looked at a single pile game, and observed that in order for the first player to win, there has to be an integer k≥1, such that kx+(k−1)y≤a1, and kx+ky>a1. Let W denote a winning state and let L denote a losing state. It should be clear (with calculation) that W becomes L for the second player after the first player removes x stones, and L becomes W in a similar fashion. Now to generalize, consider the array as an array of Ls and Ws. The simple strategy of always handing the other person an array full of L (this should remind you of nim game if it doesn't I don't know why I wrote this), should be the optimal strategy. This solution is not possible if we have already have an array full of Ls to begin with and whatever move we make, there would be Ws in the resulting array. Now, it seems like if we have Ws to begin with, we can change all Ws to Ls and we are winning. However, there is one corner case, where we have x>y, and L for the first player is a W for the second player in some cases as shown above. If that is the case, the first player loses.
+
+<https://codeforces.com/blog/entry/104216?#comment-926210>

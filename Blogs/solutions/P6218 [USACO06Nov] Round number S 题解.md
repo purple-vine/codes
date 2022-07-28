@@ -81,24 +81,28 @@ for(int i = (cnt+1)/2; i <= cnt-1; i++) ans += dp(2, i, 1);
 
 分析复杂度。每个 $f_{i,j,k}$  最多只被搜索一次，这仅有 $32 \cdot 32 \cdot 2$ 不到的计算量。看似我们对每个 $j$ 都搜了一次，但是，这并不会让复杂度更劣，反之，这让代码更易理解。
 
+upd：后来自己意识到在 dp 时，如果 l 是 0，可以直接返回组合数。但亲测不会优化时间（30ms -> 39ms），不过这在数字够大时会有明显优化。
+
 完整代码：
 
 ```cpp
 //time : 22-7-26 21:28
 //problem url : https://www.luogu.com.cn/problem/P6218
-//status : AC
+//status : not submitted
 #include <cstdio>
 #include <algorithm>
 #include <cstring>
 using namespace std;
 const int M = 205;
 int f[M][M][2], n, l, r, a[M], cnt;
+int c[M][M];
 int dp(int n, int m, bool l){ //填到 n 位，后恰好 m 个 0，l 为 1 表示前面都是顶着限制填的
     if(f[n][m][l]) return f[n][m][l];
     if(m < 0) return 0;
     if(cnt - n + 1 < m) return 0; 
     // if(m == cnt - n + 1 && !l) return 1;
     if(n == cnt + 1) return m == 0;
+    if(!l) return c[cnt-n+1][m];
     int ans = 0;
     if(l) {
         if(a[n] == 0) ans += dp(n+1, m-1, 1); // 限制是 0 的情况，只能填 0
@@ -109,9 +113,8 @@ int dp(int n, int m, bool l){ //填到 n 位，后恰好 m 个 0，l 为 1 表�
     // printf("%d %d %d %d\n", n, m, l, ans);
     return f[n][m][l] = ans; 
 }
-int c[M][M];
 void pre(int n = 200){
-    c[1][0] = c[1][1] = 1;
+    c[0][0] = c[1][0] = c[1][1] = 1;
     for(int i = 2; i <= n; i++){
         c[i][0] = 1;
         for(int j = 1; j <= i; j++) c[i][j] = c[i-1][j] + c[i-1][j-1];

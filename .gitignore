@@ -9,3 +9,4 @@ debug.cpp
 temp*.cpp
 .cph/
 js/
+temp*.*

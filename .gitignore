@@ -10,3 +10,5 @@ temp*.cpp
 .cph/
 js/
 temp*.*
+gen*.cpp
+checker*.cpp

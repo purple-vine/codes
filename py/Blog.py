@@ -288,8 +288,8 @@ def wist2(ct):
     return rta
             
 ##############################################
-uid = "443664"
-client = "c41bdf604377eca58a3e262177b6ab2136818ea2" 
+uid = ""
+client = "" 
 ##############################################
 string = "_uid="+uid+";__client_id="+client
 

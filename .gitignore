@@ -11,3 +11,4 @@ js/
 temp*.*
 gen*.cpp
 checker*.cpp
+note.md

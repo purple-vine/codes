@@ -12,3 +12,5 @@ temp*.*
 gen*.cpp
 checker*.cpp
 note.md
+*_files/*
+*.html

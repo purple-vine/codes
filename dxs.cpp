@@ -3,7 +3,7 @@
 #include <cmath>
 #include <vector>
 using namespace std;
-const int M = 300005, p = 998244353;
+const int M = 600005, p = 998244353;
 inline int read() { 
     char c = getchar(); int x = 0, f = 1;
     while(c < '0' || c > '9') {if(c == '-') f = -1; c = getchar();}
@@ -71,11 +71,12 @@ void pre(int n){
         invn[i] = 1ll * invn[p%i] * (p - p/i) % p;
 }
 
+int f[M];
 void NTT(int *g, int n, int type){
     //F(x) = FL(x^2) + x*FR(x^2)
     //F(W^k) = FL(w^k) + W^k*FR(w^k)
     //F(W^{k+n/2}) = FL(w^k) - W^k*FR(w^k)
-    int *f = new int[M]; clr(f); cpy(f, g, n);
+    cpy(f, g, n);
 	for(int i = 0; i < n; i++)
 		tr[i] = (tr[i >> 1] >> 1) | ((i & 1) ? n >> 1 : 0);
 	for(int i = 0; i < n; i++) if(i < tr[i])
@@ -91,52 +92,78 @@ void NTT(int *g, int n, int type){
 		}
 	} 
     if(type) mul(f, n, inv(n));
-    cpy(g, f, n);
+    cpy(g, f, n); clr(f, n);
 }
 
-void mul(int *f, int *g, int len, int lim){
-    int *tmp = new int[M];
+int k1[M];
+void polymul(int *f, int *g, int len, int lim){
     int n = 1; for(; n <= len+len; n <<= 1);
-    clr(tmp, n); cpy(tmp, g, n);
-    NTT(f, n, 0); NTT(tmp, n, 0);
-    px(f, tmp, n); NTT(f, n, 1);
-    clr(f + lim, n - lim); clr(tmp, n);
-    delete[] tmp;
+    cpy(k1, g, n);
+    NTT(f, n, 0); NTT(k1, n, 0);
+    px(f, k1, n); NTT(f, n, 1);
+    clr(f + lim, n - lim); clr(k1, n);
 }
 
-void inv(int *k, int len){
+int v[M], r[M], tp[M];
+void polyinv(int *k, int len){
 	// f(x) = 2*r(x) - r(x)^2 * F(x) (mod x^n)
     //      = r(x) * (2 - r(x) * F(x))
+    //f_{n}(x) = 2 * f_{n-1}(x) - f_{n-1}(x) ^ 2 * F(x)
 	//r:前n/2位 f:前n位 
-    int *f = new int[M], *r = new int[M], *tmp = new int[M], *tmp2 = new int[M];
-    clr(r); clr(tmp); clr(tmp2);
 	int n = 1; for(; n <= len; n <<= 1);
-    f[0] = inv(k[0]);
+    v[0] = inv(k[0]);
     for(int l = 2; l <= n; l <<= 1){
-        cpy(r, f, l/2); mul(r, l/2, 2);
-        NTT(f, l << 1, 0); px(f, f, l << 1);
+        cpy(r, v, l/2); mul(r, l/2, 2);
+        NTT(v, l << 1, 0); px(v, v, l << 1);
         // 下面拷 l 位就够了，不要拷 l<<1 位
-        cpy(tmp, k, l); NTT(tmp, l << 1, 0); px(f, tmp, l << 1);
-        NTT(f, l << 1, 1); clr(f + l, l);
-        mins(f, r, f, l);
+        cpy(tp, k, l); NTT(tp, l << 1, 0); px(v, tp, l << 1);
+        NTT(v, l << 1, 1); clr(v + l, l);
+        mins(v, r, v, l);
     }
-    cpy(k, f, n);
-    delete[] f, r, tmp, tmp2;
+    cpy(k, v, n); clr(v, n<<1); clr(r, n<<1); clr(tp, n<<1);
 }
 
-void ln(int *g, int len){
-    int *f = new int[M]; cpy(f, g, len);
-    qiudao(f, len); inv(g, len);
-    mul(g, f, len, len); jifen(g, len-1);
-    delete[] f;
+int l[M];
+void polyln(int *g, int len){
+    cpy(l, g, len);
+    qiudao(l, len); polyinv(g, len);
+    polymul(g, l, len, len); jifen(g, len-1);
+    clr(l, len);
 }
 
+int s[M], s2[M];
+void polysqrt(int *g, int len){
+    // f_{n}(x) = (F(x) + f_{n-1}(x) ^ 2) / (2 * f_{n-1}(x))
+    int n = 1; for(; n <= len; n <<= 1) ;
+    s[0] = 1;
+    for(int l = 2; l <= n; l <<= 1){
+        cpy(s2, s, l); NTT(s2, l, 0); px(s2, s2, l);
+        NTT(s2, l, 1); add(s2, s2, g, l);
+        mul(s, l, 2); polyinv(s, l); 
+        polymul(s, s2, l, l);
+    }
+    cpy(g, s, len); clr(s, n); clr(s2, n);
+}
+
+int x1[M], x2[M], x3[M];
+void polyexp(int *g, int len){
+    // f_t(x) = f_{t-1} - (ln(f_{t-1}) - F(x)) * f_{t-1}
+    //        = (1 - ln(f_{t-1}) + F(x)) * f_{t-1}           
+    int n = 1; for(; n <= len; n <<= 1) ;
+    x1[0] = 1;
+    for(int l = 2; l <= n; l <<= 1){
+        cpy(x2, x1, l); polyln(x2, l); mins(x2, x2, g, l);
+        cpy(x3, x1, l);
+        polymul(x2, x3, l, l); mins(x1, x1, x2, l);
+    }
+    cpy(g, x1, len); clr(x1, n); clr(x2, n); clr(x3, n);
+}
 int n, m;
 int a[M], b[M], ans[M];
 int main(){
 	scanf("%d", &n);
     for(int i = 0; i < n; i++) a[i] = (read() + p) % p;
-    ln(a, n); print(a, n);
+    polyexp(a, n); print(a, n);
 }
 /*
 5

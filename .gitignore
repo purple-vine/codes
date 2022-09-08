@@ -14,3 +14,5 @@ checker*.cpp
 note.md
 *_files/*
 *.html
+9.04/BIG/*/*.in
+9.04/BIG/*/*.out

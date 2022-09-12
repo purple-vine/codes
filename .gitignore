@@ -16,3 +16,5 @@ note.md
 *.html
 9.04/BIG/*/*.in
 9.04/BIG/*/*.out
+9.12/*/*.in
+9.12/*/*.out

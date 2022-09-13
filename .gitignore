@@ -14,5 +14,7 @@ checker*.cpp
 note.md
 *_files/*
 *.html
-*.in
-*.out
+szjudge/9.04/big/*/*.in
+szjudge/9.04/big/*/*.out
+szjudge/9.12/*/*.in
+szjudge/9.12/*/*.out

@@ -18,3 +18,5 @@ szjudge/9.04/big/*/*.in
 szjudge/9.04/big/*/*.out
 szjudge/9.12/*/*.in
 szjudge/9.12/*/*.out
+pjudge/*/*.in
+pjudge/*/*.ans

@@ -60,3 +60,29 @@ int main(){
     printf("%d\n", ans);
 }
 ```
+
+--------------
+
+upd 11/13
+
+在 Luogu 上看到 [一个生成函数题解](https://www.luogu.com.cn/blog/Unique-Hanpi/abc276g-ti-xie)，最后的式子也化到了自己卡住那步，把后面的来补全一下。
+
+要求的即为 
+
+$$ 
+\begin{aligned}
+& [x^m] \left ( \dfrac{x^2+x}{1-x^3} \right )^{n-2} \cdot \dfrac{1}{(1-x)^2} \\
+= & [x^{m-n+2}] \dfrac{(x+1)^{n-2}}{(1-x^3)^{n-2}} \cdot \dfrac{1}{(1-x)^2} \\
+\end{aligned}
+$$
+
+$\dfrac{1}{(1-x)^2}$ 相当于对前面的东西弄个二维前缀和，而 
+
+$$
+\begin{aligned}
+(x+1)^{n-2} &= \sum \limits_{m \geq 0} \binom{n-2}{m} x^m \\
+\dfrac{1}{(1-x^3)^{n-2}} &= \sum\limits_{m \geq 0} \binom{n-3+m}{m}x^{3m}
+\end{aligned}
+$$
+
+先把两者中的一者卷个 $\dfrac{1}{(1-x)^2}$ 再和另一者卷起来即可，因为只需要一项，不需要 NTT，总时间复杂度线性。

@@ -1,5 +1,7 @@
 NOIp 前随机一道题来补。
 
+[link to Luogu](https://www.luogu.com.cn/problem/P4284)
+
 NOIp2022 rp++
 
 题意：

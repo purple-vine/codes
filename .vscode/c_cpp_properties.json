@@ -11,13 +11,13 @@
                 "_UNICODE"
             ],
             "cStandard": "gnu17",
-            "cppStandard": "c++11",
+            "cppStandard": "c++20",
             "intelliSenseMode": "gcc-x64",
             "compilerPath": "D:/MinGW/bin/g++.exe",
             "compilerArgs": [
                 "-Wall",
                 "-Wshadow ",
-                "-std=c++11",
+                "-std=c++2a",
                 "-Wpedantic"
             ]
         }
